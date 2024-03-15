@@ -33,9 +33,9 @@ long GetPeriodNaive(long modNum)
     for (long i = 3; i < long.MaxValue; i++)
     {
         long percent = modNum / 1000;
-        if (percent < 1000000)
+        if (percent < 100000000)
         {
-            percent = 1000000;
+            percent = 100000000;
         }
         if (i % percent == 0)
         {
@@ -90,7 +90,7 @@ long GetPeriod(long modNum)
     var numAfterPeriod = F(firstPeriod + 1, modNum);
 
     long period = MatrixGetPeriod(modNum, firstPeriod, numAfterPeriod, allFactors);
-    periodCache.Add(modNum, period);
+    periodCache.TryAdd(modNum, period); // if modNum is prime, then naive method has added cache, so we just try add.
     return period;
 }
 
@@ -319,6 +319,10 @@ while (Console.ReadLine() is string l)
     catch (Exception e)
     {
         Console.WriteLine(e.Message);
+#if DEBUG
+        throw;
+#else
         continue;
+#endif
     }
 }
